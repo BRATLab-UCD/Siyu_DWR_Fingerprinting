@@ -1,9 +1,9 @@
 # Siyu_DWR_Fingerprinting
  Projects in collaboration with the California Department of Water Resources. Apply machine learning for X2 estimation and fingerprinting.
  ## What's in this repo
- * [FP_Stations.pdf](FP_Stations.pdf): the map showing 19 locations of interest.
- * [Fingerprinting_Readings](Fingerprinting_Readings): Reading materials.
-   - [Ref2](Fingerprinting_Readings/Ref2_2018_DSM2_Emulation_Chen.pdf): the paper that proposes training one ANN per location per boundary source. The used input variables are (according to Table 4 in the paper):
+ * [FP_Stations.pdf](main/FP_Stations.pdf): the map showing 19 locations of interest.
+ * [Fingerprinting_Readings](main/Fingerprinting_Readings): Reading materials.
+   - [Ref2](main/Fingerprinting_Readings/Ref2_2018_DSM2_Emulation_Chen.pdf): the paper that proposes training one ANN per location per boundary source. The used input variables are (according to Table 4 in the paper):
    <!-- <style type="text/css">
    .tg  {border-collapse:collapse;border-spacing:0;}
    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -101,18 +101,18 @@
    </table>
    * 0: Gate is fully closed; 1: one gate is fully open; 2: two gates are fully open.
 
- * [Data](Data): all the output data. Note that the column names in each csv file represent one location of interest in the Delta, as marked in the [map](FP_Stations.pdf).
+ * [Data](main/Data): all the output data. Note that the column names in each csv file represent one location of interest in the Delta, as marked in the [map](main/FP_Stations.pdf).
     - Six csv files: each for one boundary source.
-    - [All.csv](Data/All.csv): summation of the six boundary sources.
-    - [dsm2_ann_inputs_historical_ec.xlsx](Data/dsm2_ann_inputs_historical_ec.xlsx): Input dataset, including input variables:
+    - [All.csv](main/Data/All.csv): summation of the six boundary sources.
+    - [dsm2_ann_inputs_historical_ec.xlsx](main/Data/dsm2_ann_inputs_historical_ec.xlsx): Input dataset, including input variables:
       - #2, #8, #9, #14
       - Northern flow = #1 + #3 + #4 + #5 + #6
       - Delta consumptive usage (input #7?)
       - San Joaquin River inflow salinity at Vernalis.
 
- * [Train_Fingerprinting_ANN.ipynb](Train_Fingerprinting_ANN.ipynb): Colab training script, same architectures as Delta modelling ANNs. Outputs are flattened into an $114 \times 1$ vector. Usage:
+ * [Train_Fingerprinting_ANN.ipynb](main/Train_Fingerprinting_ANN.ipynb): Colab training script, same architectures as Delta modelling ANNs. Outputs are flattened into an $114 \times 1$ vector. Usage:
     1. In your Google Drive, create a folder named "fingerprinting".
-    2. Upload the folder "[Data](Data)", this script, along with the helper script "[preprocessing_utils.py](preprocessing_utils.py)". The directory structure shall look like:
+    2. Upload the folder "[Data](main/Data)", this script, along with the helper script "[preprocessing_utils.py](main/preprocessing_utils.py)". The directory structure shall look like:
 
    ```bash
       fingerprinting
@@ -129,7 +129,7 @@
       └── Train_Fingerprinting_ANN.ipynb
    ```
 
-    3. Open [Train_Fingerprinting_ANN.ipynb](Train_Fingerprinting_ANN.ipynb) via Google Colab and run it from there.
+    3. Open [Train_Fingerprinting_ANN.ipynb](main/Train_Fingerprinting_ANN.ipynb) via Google Colab and run it from there.
 
 ## A few thoughts:
  * Output scaling: still linearly normalize each variable individually?
