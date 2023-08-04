@@ -180,3 +180,37 @@ def conv_filter_generator(ndays=7,window_size = 11, nwindows=10):
     for ii in range(nwindows):
         w[0,((nwindows-ii-1)*window_size):((nwindows-ii)*window_size),ndays+ii] = 1/window_size
     return w
+
+def predict(model,dfx,xscaler,yscaler,columns=['prediction'],ndays=8,window_size=11,nwindows=10):
+    dfx=pd.DataFrame(xscaler.transform(dfx),dfx.index,columns=dfx.columns)
+    xx=create_antecedent_inputs(dfx,ndays=ndays,window_size=window_size,nwindows=nwindows)
+    oindex=xx.index
+    yyp=model.predict(xx)
+    dfp=pd.DataFrame(yscaler.inverse_transform(yyp),index=oindex,columns=columns)
+    return dfp
+
+class ANNModel:
+    '''
+    model consists of the model file + the scaling of inputs and outputs
+    '''
+    def __init__(self,model,xscaler,yscaler):
+        self.model=model
+        self.xscaler=xscaler
+        self.yscaler=yscaler
+    def predict(self, dfin,columns=['prediction'],ndays=8,window_size=11,nwindows=10):
+        return predict(self.model,dfin,self.xscaler,self.yscaler,columns=columns,ndays=ndays,window_size=window_size,nwindows=nwindows)
+
+def save_model(location, model, xscaler, yscaler):
+    '''
+    save keras model and scaling to files
+    '''
+    joblib.dump((xscaler,yscaler),'%s_xyscaler.dump'%location)
+    model.save('%s.h5'%location)
+
+def load_model(location,custom_objects):
+    '''
+    load model (ANNModel) which consists of model (Keras) and scalers loaded from two files
+    '''
+    model=keras.models.load_model('%s.h5'%location,custom_objects=custom_objects)
+    xscaler,yscaler=joblib.load('%s_xyscaler.dump'%location)
+    return ANNModel(model,xscaler,yscaler)
